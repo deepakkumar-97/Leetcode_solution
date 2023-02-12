@@ -9,10 +9,8 @@ class Solution{
 	    if(i<0 || j<0) return 0;
 	    
 	  if(dp[i][j] != -1) return dp[i][j];
-	   if(str1[i] == str2[j]) return dp[i][j] = 1+lcs(i-1,j-1,str1,str2,dp);
-	   else return dp[i][j] = max(lcs(i-1,j,str1,str2,dp),lcs(i,j-1,str1,str2,dp));
-	   
-	    
+	  if(str1[i] == str2[j]) return dp[i][j] = 1+lcs(i-1,j-1,str1,str2,dp);
+	  else return dp[i][j] = max(lcs(i-1,j,str1,str2,dp),lcs(i,j-1,str1,str2,dp));
 	}	
 
 	public:
@@ -21,10 +19,11 @@ class Solution{
 	    // Your code goes here
 	    int l1 = str1.size();
 	    int l2 = str2.size();
-	    vector<vector<int>> dp(l1,vector<int>(l2,-1));
-	    int x = lcs(l1-1,l2-1,str1,str2,dp);
+	   // vector<vector<int>> dp(l1,vector<int>(l2,-1));
+	   // int x = lcs(l1-1,l2-1,str1,str2,dp);
 	    
 	    
+	    // Tabulation 
 	    
 	   //vector<vector<int>> dp(l1+1, vector<int>(l2+1,0));
 	   //for(int i=1; i<=l1; i++){
@@ -34,6 +33,16 @@ class Solution{
 	   //    }
 	   //}
 	   // int x = dp[l1][l2];
+	   
+	   vector<int> prev(l2+1,0), curr(l2+1,0);
+	   for(int i=1; i<=l1; i++){
+	      for(int j=1; j<=l2; j++){
+	          if(str1[i-1] == str2[j-1]) curr[j] = 1+prev[j-1];
+	          else curr[j] = max(prev[j] ,curr[j-1]);
+	      }
+          prev = curr;
+	   }
+	   int x = prev[l2];
 	   
 	    return l1+l2 -2*x;
 	    
